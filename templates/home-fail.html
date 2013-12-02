@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="css/jquery.countdown.css" />
+{% endblock %}
+
+{% block script %}
+<script src="js/jquery.countdown.js"></script>
+<script src="scripts/home_fail.js"></script>
+{% endblock %}
+
+{% block content %}
+<div data-role="page" id="homeFail">
+
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h1>One 'n' Dun!</h1>
+		
+
+		<div id="sorry">
+			<p>
+				You didn't make it to
+				<code><strong>{{ home | escape }}</strong></code>
+				on time! Now <code><strong>{{ human_wager }}</strong></code>
+				of your hard earned cash will go to <code><strong>{{ charity | escape }}</strong></code>
+				...
+			
+				and you <em>HATE</em>
+				<code><strong>{{ charity | escape }}</strong></code>
+				!
+			</p>
+			<a href="#ok_popup" data-mini="true" data-role="button" data-rel="dialog" data-transition="pop" data-inline="true">Okay...</a>
+
+		</div>
+	</div>
+</div>
+
+<!--  *********************            Start of Okay... page: #ok_popup             *********************  -->
+
+<div data-role="page" id="ok_popup">
+
+	<div data-role="header" data-theme="e">
+		<h1>Just Kidding!</h1>
+	</div>
+
+	<div data-role="content" data-theme="d">
+		<h3>One 'n' Dun</h3>
+		
+		<p>Thanks for beta-testing One 'n' Dun! If this had been a <em>actual</em> One 'n' Dun session, you would have <em>REALLY</em> lost {{ human_wager }}!</p>
+		
+		<p>We might have given you a chance to answer trivia and win <em>some</em> of it back... We would also probably give you the option of donating to a charity you <em>don't</em> HATE as well. Hope you had fun! </p>
+
+		<p>
+			<a href="#homeFail"  data-rel="back" data-role="button" data-inline="true" data-icon="back">Go Back!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div>
+{% endblock %}
+

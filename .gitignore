@@ -1,0 +1,31 @@
+
+# compiled python
+*.py[co]
+
+# Secret Files
+foursquare_secrets.py
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+nohup.out
+# Installer logs
+pip-log.txt
+
+# Code we don't need
+old_code/
+
+
+
+#Eclipse junk
+.project
+.pydevproject

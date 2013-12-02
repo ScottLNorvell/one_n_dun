@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="css/jqm-icon-pack-2.0-original.css" />
+{% endblock %}
+
+{% block script %}
+<script src="scripts/set_prefs.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!--  *********************             Start of home page: #setPrefs             *********************  -->
+<div data-role="page" id="setPrefs">
+
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+
+		<h3>Where is Home?</h3>
+		<div id="home_okay" ></div>
+		<input type="hidden" id="home" value=""/>
+		<input type="hidden" id="home_id" value=""/>
+		<div id="mess">
+			<ul id="autocomplete" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Where is home?" data-filter-theme="d"></ul>
+		</div>
+		<ul id="homeList" data-role="listview" data-inset="true" ></ul>
+		<!-- **** this is my form **** -->
+		<div class="form">
+			<form action="/test" method="post" data-ajax="false" >
+
+				<input type="hidden" name="testobj" id="testObj" value="">
+				<span id="submit_button" >
+					<input type="submit" id="submit" value="Make it Happen!" data-inline="true" />
+				</span>
+			</form>
+		</div>
+
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+<!--  *********************            Start of Time page: #time_popup             *********************  -->
+<div data-role="page" id="time_popup">
+
+	<div data-role="header" data-theme="e">
+		<h1>Home Set!</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<div id='thisIsHome'></div>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+<!--  *********************            Start of Wager page: #wager_popup             *********************  -->
+<div data-role="page" id="wager_popup">
+
+	<div data-role="header" data-theme="e">
+		<h1>Make Wager</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+{% endblock %}

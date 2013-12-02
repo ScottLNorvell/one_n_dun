@@ -1,0 +1,48 @@
+<h2>{{category}}</h2>
+<h4>(For <span class="questionHumanWinnings"></span>)</h4>
+<h3>Q: {{q}}</h3>
+
+<!-- **** this is my form **** -->
+<div class="form" id="answerPosses">
+	<p>
+		<span id="answerCountdown" class="countdown"></span>
+	</p>
+	<form id="answerForm" action="/trivia" method="post" data-ajax="false" >
+		<fieldset data-role="controlgroup">
+
+			{% for choice,text in possible %}
+			<input type="radio" name="choice" class="triviaChoice" id="poss_{{choice}}" data-choice="{{choice}}|{{text}}" value="{{choice}}" >
+			<label for="poss_{{choice}}">{{choice}}: {{text}}</label>
+			{% endfor %}
+
+		</fieldset>
+		<input type="hidden" name="answer_hash" value="{{answer_hash}}">
+		<!-- **might not need this** -->
+		<input type="hidden" id="questionWinnings" name="question_winnings" value="">
+
+		<input type="submit" id="submitTrivia" value="Submit Answer!" data-inline="true" data-ajax="false" />
+	</form>
+</div>
+<div id="possList" style="display: none">
+	<ul id="possUl"  data-inset="true">
+		{% for choice,text in possible %}
+		<li id="list_{{choice}}"  data-icon="false">
+			<a href="#">{{choice}}: {{text}}</a>
+		</li>
+		{% endfor %}
+	</ul>
+	<a href="#trivGame" id="trivGameBack" data-role="button">Back</a>
+</div>
+
+<div id="rightAnswer" style="display: none">
+	<p>
+		Great job! The answer was <span class="answerShow"></span>!
+		Your current wager is now <span class="currHumanWager"></span>.
+	</p>
+</div>
+<div id="wrongAnswer" style="display: none">
+	<p>
+		Sorry! The answer was <span class="answerShow"></span>...
+	</p>
+</div>
+

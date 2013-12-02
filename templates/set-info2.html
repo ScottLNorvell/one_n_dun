@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block style %}
+<link rel="stylesheet" href="stylesheets/main.css" />
+{% endblock %}
+
+{% block script %}
+<script src="scripts/set_info.js"></script>
+{% endblock %}
+
+{% block content %}
+<div data-role="page" id="setInfo">
+
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h3>One 'n' Dun</h3>
+		<p>
+			Set a timer and make a wager. If you check in at "home" before then, keep your money. If not, it goes to a charity you HATE!
+		</p>
+		<div class="form">
+			<form action="/test" method="post" data-ajax="false" >
+				<div data-role="collapsible-set" data-theme="c" data-content-theme="d">
+					<div data-role="collapsible" data-collapsed-icon="grid" data-expanded-icon="arrow-d" >
+
+						<h3>Set a Timer</h3>
+						<label for="time">It's <span id="now"></span>. How soon do you want to be home?</label>
+						<input type="time" data-clear-btn="false" name="time" id="time" value="">
+					</div>
+					<div data-role="collapsible" data-collapsed-icon="edit" data-expanded-icon="arrow-d" >
+						<h3>Make a Wager</h3>
+						<p>
+							<label for="amount">Wager Amount:</label>
+							<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold; background-color: #FFFBCE" data-role="none"/>
+						</p>
+						<div data-role="fieldcontain">
+							<label for="wage_slider" class="ui-hidden-accessible" >Wager:</label>
+							<input type="range" name="wager" id="wage_slider" data-highlight="true" min="5" max="500" step="5" value="50">
+							<div id="wage_message">
+								<p></p>
+							</div>
+						</div>
+					</div>
+					<div data-role="collapsible" data-collapsed-icon="home" data-expanded-icon="arrow-d" >
+						<h3>Where is Home?</h3>
+						<div id="home_okay" ></div>
+						<input type="hidden" id="home" value=""/>
+						<input type="hidden" id="home_id" value=""/>
+						<div id="mess">
+							<ul id="autocomplete" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Find a city..." data-filter-theme="d"></ul>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="source_content_id" value="{{content_id}}" />
+				<input type="hidden" name="fsqCallback" value="{{fsqCallback}}" />
+				<input type="submit" value="Make it Happen!" data-inline="true"  />
+			</form>
+			<button onclick="setHome('waterphone','56')">
+				log me!
+			</button>
+		</div>
+
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n Dun</h4>
+	</div><!-- /footer -->
+</div><!-- /page one -->
+{% endblock %}
+

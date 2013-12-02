@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="css/jqm-icon-pack-2.0-original.css" />
+{% endblock %}
+
+{% block script %}
+<script src="scripts/set_info.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!--  *********************             Start of home page: #setInfo             *********************  -->
+<div data-role="page" id="setInfo">
+
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h2>One 'n' Dun</h2>
+		<p>
+			Set a timer and make a wager. If you check in at "home" before then, keep your money. If not, it goes to a charity you HATE!
+		</p>
+		<h3>Let's get rolling:</h3>
+		<p>
+			You need to get to
+			<span id="home_okay" ></span>
+			<span id="home_button"><a href="#home_popup" data-mini="true" data-role="button" data-transition="slidedown" data-inline="true" data-icon="mappin">Where is Home?</a></span>
+			by
+			<span id="time_okay" ></span>
+			<span id="time_button"><a href="#time_popup" data-mini="true" data-role="button" data-transition="slidedown" data-inline="true" data-icon="bell">Set a Timer</a></span>
+			or
+			<span id="wager_okay" ></span>
+			<span id="wager_button"><a href="#wager_popup" data-mini="true" data-role="button" data-transition="slidedown" data-inline="true" data-icon="dollar">Make a Wager</a></span>
+			goes to <span id="charity_okay" ></span>
+			<span id="charity_button"><a href="#charity_popup" data-mini="true" data-role="button" data-transition="slidedown" data-inline="true" data-icon="page">Set a Charity you HATE!</a></span>
+		</p>
+
+		
+
+		<!-- **** this is my form **** -->
+		<div class="form">
+			<form action="/onendun" method="post" data-ajax="false" >
+				<input type="hidden" name="now" id="nowSubmit" value="">
+				<input type="hidden" name="then" id="thenSubmit" value="">
+				<input type="hidden" name="human_time" id="humanTime" value="">
+				<input type="hidden" name="charity" id="charity" value="">
+				<input type="hidden" name="charity_id" id="charity_id" value="">
+				<input type="hidden" name="wager" id="wager">
+				<input type="hidden" name="human_wager" id="human_wager">
+				<input type="hidden" name="home" id="home" value=""/>
+				<input type="hidden" name="home_id" id="home_id" value=""/>
+				{% if robot_posts %}
+				<input type="hidden" name="robot_pref" id="robot_pref" value="true"/>
+				{% else %}
+				<input type="hidden" name="robot_pref" id="robot_pref" value=""/>
+				{% endif %}
+				<input type="hidden" name="source_content_id" value="{{content_id}}" />
+				<input type="hidden" name="fsqCallback" value="{{fsqCallback}}" />
+				<span id="submit_button" style="display: none" >
+					<input type="submit" id="submit" value="Make it Happen!" data-inline="true" />
+				</span>
+			</form>
+		</div>
+		<div id="reset_buttons">
+			<p>
+				<span id="home_reset" style="display: none" ><a href="#home_popup" data-role="button" data-mini="true"  data-transition="slidedown" data-inline="true">Reset Home</a></span>
+				<span id="time_reset" style="display: none" ><a href="#time_popup" data-role="button" data-mini="true" data-transition="slidedown" data-inline="true">Reset Timer</a></span>
+				<span id="wager_reset" style="display: none" ><a href="#wager_popup" data-role="button" data-mini="true" data-transition="slidedown" data-inline="true">Reset Wager</a></span>
+				<span id="charity_reset" style="display: none" ><a href="#charity_popup" data-role="button" data-mini="true" data-transition="slidedown" data-inline="true">Reset Charity</a></span>
+			</p>
+		</div>
+		<p>
+			<span id="robot_set"><a href="#robot_popup" data-role="button" data-rel="dialog" data-transition="pop" data-inline="true">Robot Posting Prefs!</a></span>
+		</p>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+<!--  *********************            Start of Time page: #time_popup             *********************  -->
+<div data-role="page" id="time_popup">
+
+	<div data-role="header" data-theme="d">
+		<h1>Set Timer</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Set a Timer</h3>
+		<label for="time">It's <span id="now"></span>. How soon do you want to be home?</label>
+		<input type="time" data-clear-btn="false" name="time" id="set_time" value="">
+		<p>
+			<a href="#setInfo" onclick="setTimer()" data-rel="back" data-role="button" data-inline="true" data-icon="back">Set the Time!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+<!--  *********************            Start of Wager page: #wager_popup             *********************  -->
+<div data-role="page" id="wager_popup">
+
+	<div data-role="header" data-theme="d">
+		<h1>Make Wager</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Make a Wager</h3>
+		<p>
+			<label for="amount">Wager Amount:</label>
+			<input type="text" id="amount" data-wagamount="50" style="border: 0; color: #55161E; font-weight: bold; background-color: #FFFBCE" data-role="none"/>
+		</p>
+
+		<label for="wage_slider" class="ui-hidden-accessible" >Wager:</label>
+		<input type="number" data-type="range" name="set_wager" id="wage_slider" data-highlight="true" min="5" max="150" step="5" value="25">
+		<div id="wage_message">
+			<p></p>
+		</div>
+		<p>
+			<a href="#setInfo" onclick="setWager()" data-rel="back" data-role="button" data-inline="true" data-icon="back">Set your Wager!</a>
+		</p>
+
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+<!--  *********************            Start of Home set page: #home_popup             *********************  -->
+
+<div data-role="page" id="home_popup">
+
+	<div data-role="header" data-theme="d">
+		<h1>Set Home</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Where is Home?</h3>
+		{% if homes %}
+		<form>
+			<fieldset data-role="controlgroup">
+				
+				{% for home,id in homes %}
+				<input type="radio" name="home-choice" id="{{id}}" data-homename="{{home}}" value="off" onclick="setHome('{{id}}')">
+				<label for="{{id}}">{{home}}</label>
+				{% endfor %}
+			</fieldset>
+		</form>
+
+		<!-- render Homes Checkboxes -->
+
+		{% endif %}
+
+		<p>
+			<a href="#setInfo"  data-rel="back" data-role="button" data-inline="true" data-icon="back">Lock in Home!</a>
+			<a href="#searchHome" data-role="button" data-inline="true" data-transition="slide" data-mini="true" >Find a new Home</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+<!-- *********************             Start of Home set page: #charity_popup             *********************  -->
+<div data-role="page" id="charity_popup">
+
+	<div data-role="header" data-theme="d">
+		<h1>Set Charity</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Choose a charity that you HATE!</h3>
+
+		<p>
+			It can also be a respectable charity, but it's better if you DON'T want your money to go there...
+		</p>
+
+		{% if charities %}
+		<form>
+			<fieldset data-role="controlgroup">
+				{% for charity,id in charities %}
+				<input type="radio" name="charity-choice" id="{{id}}" data-charityname="{{charity}}" value="off" onclick="setCharity('{{id}}')">
+				<label for="{{id}}">{{charity}}</label>
+				{% endfor %}
+			</fieldset>
+		</form>
+
+		
+
+		{% endif %}
+
+		<p>
+			<a href="#setInfo" onclick="console.log('clicked charity button')" data-rel="back" data-role="button" data-inline="true" data-icon="back">Lock Charity!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+<!--  *********************            Start of Robot page: #robot_popup             *********************  -->
+<div data-role="page" id="robot_popup">
+
+	<div data-role="header" data-theme="e">
+		<h1>Allow Robot Posting?</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Meet OneNDun The Robot</h3>
+		<p>With this box checked, OneNDun will post helpful reminders to your checkin. (if you are friends with him) Easiest way to stop the posts is to defriend OneNDun the Robot. Don't worry he won't get offended!</p>
+		
+		{% if robot_posts %}
+		
+		<input type="checkbox" name="robot_cb" id="robot_cb" checked="true" >
+		<label for="robot_cb">Allow Robot Posting</label>
+		
+		{% else %}
+		
+		<input type="checkbox" name="robot_cb" id="robot_cb" checked="true" >
+		<label for="robot_cb">Allow Robot Posting</label>
+		
+		{% endif %}
+		
+		<p>
+			<a href="#setInfo" onclick="setRobot()" data-rel="back" data-role="button" data-inline="true" data-icon="back">Set Robot Pref!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+<!-- *********************             Start of searchHome page: #searchHome             *********************  -->
+<div data-role="page" id="searchHome">
+
+	<div data-role="header" data-theme="a">
+		<h1>Find A Home:</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Search for a new Home!</h3>
+
+		<p>
+			It must be an existing foursquare location. Enter a query, press the button and choose from the options.
+		</p>
+		<form id="autoCompForm" action="#" method="post">
+
+			<input type="search" id='autocomplete' data-theme="d" placeholder="Search for a Home..."/>
+
+			<input type="hidden" name='latlon' id="latlon" value="{{latlon}}"/>
+			<div id="mess">
+				<ul id="autoCompList" data-role="listview" data-inset="true" ></ul>
+			</div>
+			<input id="autoCompSubmit" type="submit" value="Search" data-inline="true" />
+		</form>
+		<div id='homeLocked'>
+			<ul id="homeLockList" data-role="listview" data-inset="true" ></ul>
+		</div>
+		<p>
+			<a href="#home_popup" data-rel="back" data-role="button" data-inline="true" data-icon="back">Set Home(s)</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+{% endblock %}

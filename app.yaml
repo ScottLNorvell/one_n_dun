@@ -1,0 +1,46 @@
+application: one-n-dun
+version: 2
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:
+- name: jinja2
+  version: latest
+  
+
+
+handlers:
+
+- url: /_checkin/.*
+  script: main.app
+  login: admin
+  secure: always
+
+- url: /oauth.*
+  script: main.app
+  secure: always
+
+- url: /.*favicon.ico
+  static_files: img/favicon.ico
+  upload: img/favicon.ico
+  expiration: 0
+
+- url: /img
+  static_dir: img
+  
+- url: /stylesheets
+  static_dir: stylesheets  
+  
+- url: /scripts
+  static_dir: scripts
+  
+- url: /js
+  static_dir: js
+  
+- url: /css
+  static_dir: css
+
+- url: /.*
+  script: main.app
+  secure: always

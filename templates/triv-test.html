@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="css/jquery.countdown.css" />
+{% endblock %}
+
+{% block script %}
+<script src="js/jquery.countdown.js"></script>
+
+<script src="scripts/triv_test.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<!--  *********************             Start of trivia game page: #trivGame             *********************  -->
+
+<div data-role="page" id="trivGame">
+
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h2>Play Trivia to Lower your Wager!</h2>
+		
+		<p>
+			Your current wager is <span class="currHumanWager">$150</span>.
+		</p>
+		<form id="wagerData">
+			<input type="hidden" name="curr_wager" id="currWager" value="150">
+			<input type="hidden" name="question_winnings" id="questionWinnings" value="5.89">
+		</form>
+		<a href="#trivia" id="getTQ" data-role="button" data-inline="true">Answer a Question for <span class="questionHumanWinnings">$5.89</span></a>
+		<a href="#trivia" id="getTQ" data-role="button" data-inline="true">Give up and Pay <span class="currHumanWager">$150</span></a>
+
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n Dun</h4>
+	</div><!-- /footer -->
+</div>
+
+<!--  *********************             Start of trivia page: #trivia             *********************  -->
+
+<div data-role="page" id="trivia">
+	
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" id="triviaContent">
+
+	</div>
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n Dun</h4>
+	</div>
+</div>
+
+{% endblock %}

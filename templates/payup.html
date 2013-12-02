@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script src="scripts/payup.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<script>
+
+	var timesPlayed = {{trivia['played']}}
+
+</script>
+
+<!--  *********************            Start of payUp page: #payUp             *********************  -->
+<div data-role="page" id="payUp">
+
+	<div data-role="header">
+		<h1>Pay Up Page</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+
+		<h2>Time to pay the Piper!</h2>
+
+		<p>
+			Shit just got real! Kiss your <code><strong>{{ human_wager }}</strong></code>
+			goodbye... I can't believe you are about to support <code><strong>{{ charity | escape }}</strong></code>
+			!
+			You <em>HATE</em> <code><strong>{{ charity | escape }}</strong></code>
+			!!
+		</p>
+		<p>
+			This transaction will happen automatically on <code><strong>{{ human_due }}</strong></code>. To stop it, you have some options:
+		</p>
+		<ol>
+			<li>
+				Cancel the transaction outright
+			</li>
+			<li>
+				Buy me a beer
+			</li>
+			<li class="playAgain">
+				Play a trivia game to lower your wager
+			</li>
+		</ol>
+		<p>
+			<a href="#cancelTrans" data-role="button" data-inline="true" data-mini="true" >CANCEL</a>
+			<a href="#buyBeer" data-role="button" data-inline="true" data-mini="true"  >Buy beer</a>
+			<a href="{{trivia_url}}" class="playAgain" data-role="button" data-inline="true" data-mini="true" data-ajax="false" >Play Trivia</a>
+		</p>
+		<p>
+			Or you can just get it over with!
+		</p>
+			<a href="#" class="payNow" data-role="button" data-inline="true" data-mini="true" >Pay NOW</a>
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+<!--  *********************            Start of cancelTrans page: #cancelTrans             *********************  -->
+<div data-role="page" id="cancelTrans">
+
+	<div data-role="header">
+		<h1>Cancel Transaction</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h2>Cancel your Transaction?</h2>
+		<p>
+			We hope your One 'n' Dun experience was helpful and rewarding. You are always more than welcome to cancel your transaction. 
+			However, canceling is a detriment to One 'n' Dun's functionality, so it is STRONGLY disadvised. Clicking "Okay CANCEL" will result in an undeletable 
+			message of <em>SHAME</em> posted to your checkin for all to see. To avoid this, PAY UP! (Or at the least Buy me a beer...)
+		</p>
+		<a href="#payUp" data-role="button" data-inline="true" data-mini="true" data-icon="back">Go Back!</a>
+		<a href="#" id="okayCancel" data-role="button" data-inline="true" data-mini="true" >Okay CANCEL</a>
+		<a href="#" class="payNow" data-role="button" data-inline="true" data-mini="true" >Pay up</a>
+		<a href="#buyBeer" data-role="button" data-inline="true" data-mini="true" >Buy beer</a>
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+<!--  *********************            Start of buyBeer page: #buyBeer             *********************  -->
+<div data-role="page" id="buyBeer">
+
+	<div data-role="header">
+		<h1>Buy me a Beer</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h2>Buy me a Beer!</h2>
+		<p>
+			This is where I tell you to buy me a beer and stuff! 
+		</p>
+		<a href="#payUp"  data-rel="back" data-role="button" data-inline="true" data-icon="back">Go Back!</a>
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+{% endblock %}

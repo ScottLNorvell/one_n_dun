@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div data-role="page" id="one">
+
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h3>One 'n' Dun</h3>
+		<p>
+			Set a timer and make a wager. If you check in at "home" before then, keep your money. If not, it goes to a charity you HATE!
+		</p>
+		<div class="form">
+			<form action="/onendun" method="post">
+				<input type="hidden" name="source_content_id" value="{{content_id}}" />
+				<input type="hidden" name="fsqCallback" value="{{fsqCallback}}" />
+				<input type="submit" data-role="button" name="amazing" value="Amazing!" />
+				<input type="submit" data-role="button" name="pretty great" value="Pretty great!" />
+			</form>
+		</div>
+
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n Dun</h4>
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+<h1>Menulette</h1>
+<div>
+	<p>
+		What do you think of {{item|escape}}?
+	</p>
+	<div class="form">
+		<form action="/menulette" method="post">
+			<input type="hidden" name="source_content_id" value="{{content_id}}" />
+			<input type="hidden" name="fsqCallback" value="{{fsqCallback}}" />
+			<input type="submit" name="amazing" value="Amazing!" />
+			<input type="submit" name="pretty great" value="Pretty great!" />
+		</form>
+	</div>
+</div>
+{% endblock %}
+

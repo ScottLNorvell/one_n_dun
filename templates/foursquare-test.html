@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="stylesheets/main.css" />
+{% endblock %}
+
+{% block script %}
+<script src="scripts/set_info.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Start of first page: #one -->
+<div data-role="page" id="setInfo">
+
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h2>One 'n' Dun</h2>
+		<p>
+			Set a timer and make a wager. If you check in at "home" before then, keep your money. If not, it goes to a charity you HATE!
+		</p>
+		<p>
+			<a href="#time_popup" data-role="button" data-rel="dialog" data-transition="pop">Set a Timer</a>
+		</p>
+		<p>
+			<a href="#wager_popup" data-role="button" data-rel="dialog" data-transition="pop">Make a Wager</a>
+		</p>
+		<p>
+			<a href="#home_popup" data-role="button" data-rel="dialog" data-transition="pop">Where is Home?</a>
+		</p>
+		<div class="form">
+			<form action="/test" method="post" data-ajax="false" >
+				<input type="hidden"  name="time" id="time" value="">
+				<input type="hidden" name="wager" id="wager">
+				<input type="hidden" name="home" id="home" value=""/>
+				<input type="hidden" name="home_id" id="home_id" value=""/>
+				<input type="hidden" name="source_content_id" value="{{content_id}}" />
+				<input type="hidden" name="fsqCallback" value="{{fsqCallback}}" />
+				<input type="submit" id="submit" value="Make it Happen!" data-inline="true"  />
+			</form>
+		</div>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n Dun</h4>
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+<!-- Start of third page: #popup -->
+<div data-role="page" id="time_popup">
+
+	<div data-role="header" data-theme="e">
+		<h1>Set Timer</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Set a Timer</h3>
+		<label for="time">It's <span id="now"></span>. How soon do you want to be home?</label>
+		<input type="time" data-clear-btn="false" name="time" id="set_time" value="">
+		<p>
+			<a href="#setInfo" data-rel="back" data-role="button" data-inline="true" data-icon="back">Set the Time!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div><!-- /page popup -->
+
+<div data-role="page" id="wager_popup">
+
+	<div data-role="header" data-theme="e">
+		<h1>Make Wager</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Make a Wager</h3>
+		<p>
+			<label for="amount">Wager Amount:</label>
+			<input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold; background-color: #FFFBCE" data-role="none"/>
+		</p>
+
+		<label for="wage_slider" class="ui-hidden-accessible" >Wager:</label>
+		<input type="number" data-type="range" name="set_wager" id="wage_slider" data-highlight="true" min="5" max="500" step="5" value="50">
+		<div id="wage_message">
+			<p></p>
+		</div>
+		<p>
+			<a href="#setInfo" data-rel="back" data-role="button" data-inline="true" data-icon="back">Set your Wager!</a>
+		</p>
+
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div><!-- /page popup -->
+
+<div data-role="page" id="home_popup">
+
+	<div data-role="header" data-theme="e">
+		<h1>Set Home</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Where is Home?</h3>
+		<div id="home_okay" ></div>
+		<div id="mess">
+			<ul id="autocomplete" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Search for home..." data-filter-theme="d"></ul>
+		</div>
+		<p>
+			<a href="#setInfo" data-rel="back" data-role="button" data-inline="true" data-icon="back">Lock in Home!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div><!-- /footer -->
+</div><!-- /page popup -->
+{% endblock %}

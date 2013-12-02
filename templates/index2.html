@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script src="scripts/index.js"></script>
+{% endblock %}
+
+{% block content %}
+<div data-role="page" id="index">
+	<span id="isAuthed" data-authed="{{authed}}"></span>
+	<div data-role="header">
+		<h1>{{ name|escape }}</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<div class="auth">
+			<h2>{{ name|escape }}</h2>
+
+			<p>
+				{{ description|escape }}
+			</p>
+
+			<h3>Authorize Here:</h3>
+			<p>
+				<a href="{{auth_url}}" data-role="button" data-ajax="false"><img src="img/connect-white.png" /></a>
+			</p>
+		</div>
+
+		<div class="authed" style="display: none;">
+			<h2>You are Authorized to {{ name|escape }}!</h2>
+			<p>
+				I need you to set at least one home preference.
+				<span class="yesHomePrefs">I think you live here: <small>(check all that apply!)</small></span>
+				<span class="setHomePrefs" style="display: none;">You live here:</span>
+				<span class="noHomePrefs">I'm not sure where you live!</span>
+			</p>
+
+			<div class="form" >
+				<form id="prefForm" action="/post_prefs" method="get" data-ajax="false" >
+					<div id="homeList">
+						{% if homes %}
+						{% for home,home_id in homes %}
+						<input type="checkbox" name="homes" id="{{home_id}}" value="{{home}}|||{{home_id}}" checked="true" data-mini="true" >
+						<label for="{{home_id}}">{{home}}</label>
+						{% endfor %}
+						{% endif %}
+					</div>
+					<a href="#searchHome" data-role="button" data-inline="true" data-transition="slidedown" data-mini="true" >Search for a Home</a>
+					
+					
+					<p>
+						I need you to set at least one Charity preference. It helps if you <em>HATE</em> them! <span class="yesCharPrefs">Here are some lovely charities that you might <em>HATE</em>: (check all that apply)</span>
+					</p>
+					<div id="charList">
+						{% if homes %}
+						{% for charity,charity_id in charities %}
+						<input type="checkbox" name="charities" id="{{charity_id}}" value="{{charity}}|||{{charity_id}}" checked="true" data-mini="true" >
+						<label for="{{charity_id}}">{{charity}}</label>
+						{% endfor %}
+						{% endif %}
+					</div>
+					<a href="#searchCharity" data-role="button" data-inline="true" data-transition="slidedown" data-mini="true" >Search for a Charity</a>
+
+					<p>
+						Also, please tell me how you'd like to be notified (if at all) <a href="#whatRobot" data-mini="true" data-transition="pop" data-role="button" data-inline="true" data-rel="dialog">???</a>
+					</p>
+					<div id="roboPrefs">
+						<fieldset >
+
+							<input type="radio" name="robot_pref" id="ondRobot" checked="true" data-mini="true" value="robot">
+							<label for="ondRobot">By friending OneNDun The Robot</label>
+							<input type="radio" name="robot_pref" id="noneRobot" data-mini="true" value="none">
+							<label for="noneRobot">No notifications</label>
+
+						</fieldset>
+					</div>
+					<input type="hidden" name="fs_id" value="{{fs_id}}">
+				</form>
+			</div>
+			<!-- link to inHTML page to search for homes! setHome will put them in checkboxes AND a Locked state on setHome page -->
+			<!-- This will be my submit prefs button. Onclick, it will submit and rewrite home prefs to a more locked state -->
+			<a href="#" id="setMyPrefs" data-role="button" data-inline="true" data-ajax="false">Make these my prefs!</a>
+			<!-- add an non-ajax button to set-prefs page? -->
+		</div>
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>{{ name|escape }}</h4>
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+<!-- *********************             Start of searchHome page: #searchHome             *********************  -->
+<div data-role="page" id="searchHome">
+
+	<div data-role="header" data-theme="a">
+		<h1>Find A Home:</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Search for your Home!</h3>
+
+		<p>
+			It must be an existing foursquare location. Enter a query, press the button and choose from the options.
+		</p>
+		<input type="text" id='autocomplete' data-theme="d">
+		<div id="mess">
+			<ul id="autoCompList" data-role="listview" data-inset="true" ></ul>
+		</div>
+		<button onclick="autoComplete()" data-inline="true" >
+			okay
+		</button>
+		<div id='homeLocked'>
+			<ul id="homeLockList" data-role="listview" data-inset="true" ></ul>
+		</div>
+		<p>
+			<a href="#index" onclick="console.log('clicked home button!')" data-rel="back" data-role="button" data-inline="true" data-icon="back">Set Home(s)</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+<!-- *********************             Start of searchCharity page: #searchCharity             *********************  -->
+<div data-role="page" id="searchCharity">
+
+	<div data-role="header" data-theme="a">
+		<h1>Find A Charity:</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Choose a charity!</h3>
+
+		<p>
+			Choose a charity from this massive list of charities. You can pick as many as you like. (hint, if it's -color- you've selected it...)
+		</p>
+
+		<p>Coming Soon! For now, you'll just have to deal the small list...</p>
+
+		<p>
+			<a href="#index" onclick="console.log('clicked charity button')" data-rel="back" data-role="button" data-inline="true" data-icon="back">Lock Charity!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+<!-- *********************             Start of whatRobot page: #whatRobot             *********************  -->
+<div data-role="page" id="whatRobot">
+
+	<div data-role="header" data-theme="a">
+		<h1>Huh?</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Who's the robot?</h3>
+
+		<p>
+			OneNDun The Robot is this adorable robot who will post friendly reminders to your checkins about how much time you have left and stuff. 
+			If OneNDun The Robot starts to annoy you, just unfriend him. He won't be sad. (He's a robot...)
+		</p>
+
+		<p>
+			<a href="#index" onclick="console.log('clicked robot ok button')" data-rel="back" data-role="button" data-inline="true" data-icon="back">OK!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+{% endblock %}

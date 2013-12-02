@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script src="scripts/index.js"></script>
+{% endblock %}
+
+{% block content %}
+<div data-role="page" id="index">
+	<span id="isAuthed" data-authed="{{authed}}"></span>
+	<div data-role="header">
+		<h1>{{ site_name|escape }}</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<div class="auth">
+			<h2>{{ site_name|escape }}</h2>
+
+			<p>
+				{{ description|safe }}
+			</p>
+
+			<h3>Authorize Here:</h3>
+			<p>
+				<a href="{{auth_url}}" data-role="button" data-ajax="false"><img src="img/connect-white.png" /></a>
+			</p>
+		</div>
+
+		<div class="authed" style="display: none;">
+			<h2>You are Authorized to {{ site_name|escape }}!</h2>
+			<p>
+				I need you to set at least one home preference.
+				<span class="yesHomePrefs">I think you live here: <small>(check all that apply!)</small></span>
+				<span class="setHomePrefs" style="display: none;">You live here:</span>
+				<span class="noHomePrefs">I'm not sure where you live!</span>
+			</p>
+
+			<div class="form" >
+				<form id="prefForm" action="/post_prefs" method="get" data-ajax="false" >
+					<div id="homeList">
+						{% if homes %}
+						{% for home,home_id in homes %}
+						<input type="checkbox" name="homes" id="{{home_id}}" value="{{home}}|||{{home_id}}" checked="true" data-mini="true" >
+						<label for="{{home_id}}">{{home}}</label>
+						{% endfor %}
+						{% endif %}
+					</div>
+					<a href="#searchHome" data-role="button" data-inline="true" data-transition="slidedown" data-mini="true" >Search for a Home</a>
+
+					<p>
+						I need you to set at least one Charity preference. It helps if you <em>HATE</em> them! <span class="yesCharPrefs">Here are some lovely charities that you might <em>HATE</em>: <small>(check all that apply!)</small></span>
+					</p>
+					<div id="charList">
+						{% if homes %}
+						{% for charity,charity_id in charities %}
+						<input type="checkbox" name="charities" id="{{charity_id}}" value="{{charity}}|||{{charity_id}}" checked="true" data-mini="true" >
+						<label for="{{charity_id}}">{{charity}}</label>
+						{% endfor %}
+						{% endif %}
+					</div>
+					<a href="#searchCharity" data-role="button" data-inline="true" data-transition="slidedown" data-mini="true" >Search for a Charity</a>
+
+					<p>
+						Also, please tell me how you'd like to be notified (if at all) <a href="#whatRobot" data-mini="true" data-transition="pop" data-role="button" data-inline="true" data-rel="dialog">???</a>
+					</p>
+					<div id="roboPrefs">
+						<fieldset >
+							{% if robot_posts %}
+
+							<input type="radio" name="robot_pref" id="ondRobot" checked="true" data-mini="true" value="robot">
+							<label for="ondRobot">By friending OneNDun The Robot</label>
+							<input type="radio" name="robot_pref" id="noneRobot" data-mini="true" value="none">
+							<label for="noneRobot">No notifications</label>
+
+							{% else %}
+
+							<input type="radio" name="robot_pref" id="ondRobot"  data-mini="true" value="robot">
+							<label for="ondRobot">By friending OneNDun The Robot</label>
+							<input type="radio" name="robot_pref" id="noneRobot" checked="true" data-mini="true" value="none">
+							<label for="noneRobot">No notifications</label>
+
+							{% endif %}
+
+						</fieldset>
+					</div>
+					<input type="hidden" name="fs_id" value="{{fs_id}}">
+					<input type="hidden" name="latlon" id="pf_latlon" value="{{latlon}}"/>
+					<input type="hidden" name="access_token" id="pf_access_token" value="{{access_token}}"/>
+					<input type="hidden" name="friends" id="pf_friends" value="{{friends_with_ond}}"/>
+				</form>
+			</div>
+			<!-- link to inHTML page to search for homes! setHome will put them in checkboxes AND a Locked state on setHome page -->
+			<!-- This will be my submit prefs button. Onclick, it will submit and rewrite home prefs to a more locked state -->
+			<a href="#" id="setMyPrefs" data-role="button" data-inline="true" data-ajax="false">Make these my prefs!</a>
+			<!-- add an non-ajax button to set-prefs page? -->
+		</div>
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>{{ site_name|escape }}</h4>
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+<!-- *********************             Start of searchHome page: #searchHome             *********************  -->
+<div data-role="page" id="searchHome">
+
+	<div data-role="header" data-theme="a">
+		<h1>Find A Home:</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Search for your Home!</h3>
+
+		<p>
+			It must be an existing foursquare location. Enter a query, press the button and choose from the options.
+		</p>
+		<form id="autoCompForm" action="#" method="post">
+
+			<input type="search" id='autocomplete' data-theme="d" placeholder="Search for a Home..."/>
+
+			<input type="hidden" name='latlon' id="latlon" value="{{latlon}}"/>
+			<div id="mess">
+				<ul id="autoCompList" data-role="listview" data-inset="true" ></ul>
+			</div>
+			<input id="autoCompSubmit" type="submit" value="Search" data-inline="true" />
+		</form>
+		<div id='homeLocked'>
+			<ul id="homeLockList" data-role="listview" data-inset="true" ></ul>
+		</div>
+		<p>
+			<a href="#index" onclick="setHomeCBs()" data-rel="back" data-role="button" data-inline="true" data-icon="back">Set Home(s)</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+<!-- *********************             Start of searchCharity page: #searchCharity             *********************  -->
+<div data-role="page" id="searchCharity">
+
+	<div data-role="header" data-theme="a">
+		<h1>Find A Charity:</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Choose a charity!</h3>
+
+		<p>
+			Choose a charity that you <em>HATE</em>. You can pick as many as you like. 
+			If you can't find one you <em>HATE</em> here, take pride in the fact that you are such a loving person and select a few anyway.
+		</p>
+		<div id="charPossList" data-role="collapsible-set" data-theme="c" data-content-theme="d" data-mini="true">
+			{% for char in bad_charities %}
+			<div data-role="collapsible" id="acc{{char['cid']}}">
+				<h3>{{char['name']}}</h3>
+				
+				<p>{{char['description'] | safe}}</p>
+				
+				<input type="checkbox" name="bad_charities" id="pref_{{char['cid']}}" value="{{char['name']}}" data-mini="true" >
+				<label for="pref_{{char['cid']}}">{{char['name']}}</label>
+			</div>
+			{% endfor %}
+		</div>
+		<p>
+			<a href="#index" onclick="console.log('clicked charity button')" data-rel="back" data-role="button" data-inline="true" data-icon="back">Lock Charity!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+<!-- *********************             Start of whatRobot page: #whatRobot             *********************  -->
+<div data-role="page" id="whatRobot">
+
+	<div data-role="header" data-theme="a">
+		<h1>Huh?</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Who's the robot?</h3>
+
+		<p>
+			OneNDun The Robot is this adorable robot who will post friendly reminders to your checkins about how much time you have left and stuff.
+			If OneNDun The Robot starts to annoy you, just unfriend him. He won't be sad. (He's a robot...)
+		</p>
+
+		<p>
+			<a href="#index" onclick="console.log('clicked robot ok button')" data-rel="back" data-role="button" data-inline="true" data-icon="back">OK!</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+<!-- *********************             Start of prefsSet dialog: #prefsSet             *********************  -->
+<div data-role="page" id="prefsSet">
+
+	<div data-role="header" data-theme="a">
+		<h1>Prefs Set!</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">
+		<h3>Congratulations!</h3>
+
+		<p>
+			You have successfully set your preferences! I hope you are happy with them. You have two choices from here:
+		</p>
+
+		<p>
+			<a href="#index" id="prefSetBack" data-rel="back" data-role="button" data-inline="true" data-icon="back">Go back and mess with them again</a>
+			<a href="http://www.google.com" id="prefSetForw" data-ajax="false" data-role="button" data-inline="true" >Get on with your life...</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>One 'n' Dun</h4>
+	</div>
+</div>
+
+{% endblock %}

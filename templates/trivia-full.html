@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!--  *********************             Start of trivia page: #trivia             *********************  -->
+
+<div data-role="page" id="trivia">
+	<script src="scripts/trivia.js"></script>
+	<div data-role="header">
+		<h1>One 'n Dun</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<h2>{{category}}</h2>
+		<h3>{{q}}</h3>
+
+		<!-- **** this is my form **** -->
+		<div class="form" id="answerPosses">
+			<form id="answerForm" action="/trivia" method="post" data-ajax="false" >
+				<fieldset data-role="controlgroup">
+
+					{% for choice,text in possible %}
+					<input type="radio" name="choice" class="triviaChoice" id="poss_{{choice}}" data-choice="{{choice}}|{{text}}" value="{{choice}}" onclick="console.log('{{choice}} {{text}}')">
+					<label for="poss_{{choice}}">{{choice}}: {{text}}</label>
+					{% endfor %}
+
+				</fieldset>
+				<input type="hidden" name="answer_hash" value="{{answer_hash}}">
+
+				<input type="submit" id="submitTrivia" value="Submit Answer!" data-inline="true" data-ajax="false" />
+			</form>
+		</div>
+		<div id="possList" style="display: none">
+			<ul id="possUl"  data-inset="true">
+				{% for choice,text in possible %}
+				<li id="list_{{choice}}"  data-icon="false">
+					<a href="#">{{choice}}: {{text}}</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+
+		<div id="rightAnswer" style="display: none">
+			<p>
+				Great job! You chose <span class="answerChoice"></span> and the answer was <span class="answerShow"></span>!
+			</p>
+		</div>
+		<div id="wrongAnswer" style="display: none">
+			<p>
+				Sorry! You chose <span class="answerChoice"></span> and the answer was <span class="answerShow"></span>...
+			</p>
+		</div>
+
+	</div>
+
+	<div data-role="footer" data-theme="d">
+		<h4>One 'n Dun</h4>
+	</div><!-- /footer -->
+</div>
+{% endblock %}

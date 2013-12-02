@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Multi-page template</title>
+		<link rel="stylesheet" href="css/themes/sunswick-colors.min.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile.structure-1.3.0.min.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+	</head>
+
+	<body>
+
+		<!-- Start of first page: #one -->
+		<div data-role="page" id="one">
+
+			<div data-role="header">
+				<h1>One 'n Dun</h1>
+			</div><!-- /header -->
+
+			<div data-role="content" >
+				<h2>One</h2>
+
+				<p>
+					Welcome {{name}}! You are a {{gender}}. You last checked in at {{last_checkin}}.
+				</p>
+				<p>
+					Check out your foursquare ID: {{id}}
+				</p>
+				<h3>Have a look at your Profile:</h3>
+				<p>
+					<a href="foursquare://users/{{id}}" data-role="button" data-ajax="false">{{name}}'s profile!</a>
+				</p>
+
+				<h3>Coming Soon!</h3>
+				<p>
+					Full One 'n Dun functionality!
+				</p>
+				<p>
+					<a href="#popup" data-role="button" data-rel="dialog" data-transition="turn">What to expect?</a>
+				</p>
+			</div><!-- /content -->
+		</div><!-- /page one -->
+
+		<!-- Start of third page: #popup -->
+		<div data-role="page" id="popup">
+
+			<div data-role="header" data-theme="e">
+				<h1>One 'n' Dun!</h1>
+			</div><!-- /header -->
+
+			<div data-role="content" data-theme="d">
+				<h2>Popup!</h2>
+				<p>
+					One 'n' Dun will help you not drink too much on a school night!
+				</p>
+				<p>
+					<a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back</a>
+				</p>
+			</div><!-- /content -->
+
+		</div><!-- /page popup -->
+
+	</body>
+</html>
